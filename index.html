@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Login & Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: white;
+    }
+
+    .form-box {
+      background: white;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .form-box h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      display: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #4caf50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .switch-form {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .switch-form span {
+      color: #4caf50;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .divider {
+      margin: 20px 0;
+      font-size: 14px;
+      color: #999;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      width: 40%;
+      height: 1px;
+      background: #ccc;
+      top: 50%;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .social-btn.google {
+      background-color: #db4437;
+      color: white;
+    }
+
+    .social-btn.facebook {
+      background-color: #3b5998;
+      color: white;
+    }
+
+    .social-btn.twitter {
+      background-color: #1da1f2;
+      color: white;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .form-box {
+        padding: 20px;
+      }
+
+      .input-group input {
+        font-size: 16px;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .social-btn {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-box {
+        padding: 15px;
+      }
+
+      .input-group input {
+        font-size: 14px;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      .social-btn {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-box" id="form-box">
+    <h2 id="form-title">Login</h2>
+
+    <!-- Login Form -->
+    <div id="login-form">
+      <div class="input-group">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" placeholder="Enter your email" required>
+        <div class="error-message" id="login-email-error">Please enter a valid email.</div>
+      </div>
+      <div class="input-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password" required>
+        <div class="error-message" id="login-password-error">Please enter a password.</div>
+      </div>
+      <button class="btn" onclick="login()">Login</button>
+      <div class="switch-form">
+        <span onclick="toggleForm('signup')">Don't have an account? Sign up</span>
+      </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signup-form" style="display:none;">
+      <div class="input-group">
+        <label for="signup-name">Name</label>
+        <input type="text" id="signup-name" placeholder="Enter your name" required>
+        <div class="error-message" id="signup-name-error">Please enter your name.</div>
+      </div>
+      <div class="input-group">
+        <label for="signup-email">Email</label>
+        <input type="email" id="signup-email" placeholder="Enter your email" required>
+        <div class="error-message" id="signup-email-error">Please enter a valid email.</div>
+      </div>
+      <div class="input-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" placeholder="Enter your password" required>
+        <div class="error-message" id="signup-password-error">Password must be at least 6 characters.</div>
+      </div>
+      <button class="btn" onclick="signup()">Sign Up</button>
+      <div class="switch-form">
+        <span onclick="toggleForm('login')">Already have an account? Login</span>
+      </div>
+    </div>
+
+    <div class="divider">OR</div>
+
+    <div class="social-buttons">
+      <button class="social-btn google" onclick="googleLogin()">Login with Google</button>
+      <button class="social-btn facebook" onclick="facebookLogin()">Login with Facebook</button>
+      <button class="social-btn twitter" onclick="twitterLogin()">Login with Twitter</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleForm(form) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const formTitle = document.getElementById('form-title');
+
+      if (form === 'signup') {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        formTitle.innerText = 'Sign Up';
+      } else {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        formTitle.innerText = 'Login';
+      }
+    }
+
+    function validateEmail(email) {
+      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return regex.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function showError(field, message) {
+      const errorElement = document.getElementById(`${field}-error`);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function hideError(field) {
+      const errorElement = document.getElementById(`${field}-error`);
+      errorElement.style.display = 'none';
+    }
+
+    function login() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      // Reset errors
+      hideError('login-email');
+      hideError('login-password');
+
+      let valid = true;
+
+      if (!validateEmail(email)) {
+        showError('login-email', 'Please enter a valid email.');
+        valid = false;
+      }
+
+      if (!password) {
+        showError('login-password', 'Please enter a password.');
+        valid = false;
+      }
+
+      if (valid) {
+        alert('Login Successful!');
+      }
+    }
+
+    function signup() {
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      // Reset errors
+      hideError('signup-name');
+      hideError('signup-email');
+      hideError('signup-password');
+
+      let valid = true;
+
+      if (!name) {
+        showError('signup-name', 'Please enter your name.');
+        valid = false;
+      }
+
+      if (!validateEmail(email)) {
+        showError('signup-email', 'Please enter a valid email.');
+        valid = false;
+      }
+
+      if (!validatePassword(password)) {
+        showError('signup-password', 'Password must be at least 6 characters.');
+        valid = false;
+      }
+
+      if (valid) {
+        alert('Sign Up Successful!');
+      }
+    }
+
+    function googleLogin() {
+      alert('Google Login clicked!');
+    }
+
+    function facebookLogin() {
+      alert('Facebook Login clicked!');
+    }
+
+    function twitterLogin() {
+      alert('Twitter Login clicked!');
+    }
+  </script>
+</body>
+</html>
